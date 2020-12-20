@@ -1,6 +1,6 @@
 import _sqlite3
 
-# execute("INSERT INTO sources (name, home_link, search_link, manga_link, cap_link, img_link) VALUES ('1','2','3','4','5','6);")
+# execute("INSERT INTO sources (name, home_link, search_link, manga_link, chap_link, img_link) VALUES ('1','2','3','4','5','6);")
 # returns str or bool -> False if goes wrong, otherwise returns bool -> True
 
 # read("SELECT * FROM sources;")
@@ -48,7 +48,7 @@ class Database:
             home_link       TEXT NOT NULL,
             search_link     TEXT NOT NULL,
             manga_link      TEXT NOT NULL,
-            cap_link        TEXT NOT NULL,
+            chap_link        TEXT NOT NULL,
             img_link        TEXT NOT NULL
         );""")
         self.execute("""CREATE TABLE IF NOT EXISTS downloads (
