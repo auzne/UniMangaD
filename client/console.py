@@ -1,6 +1,13 @@
 import os
 
-from utils.conn import Database
+try:
+    from utils.conn import Database
+except ImportError:
+    if __name__ == '__main__':
+        print("this file should not be running as main")
+    else:
+        print("there is no utils.conn to import")
+        quit()
 
 class Application:
     def __init__(self, printErrors: bool = False):
@@ -15,6 +22,8 @@ class Application:
             command = str(input("-> ")).strip().lower().split(' ')
             if command[0] in commands_list:
                 functions_list[commands_list.index(command[0])](' '.join(command[1:]) if command[0] not in ["list", "add"] else bool)
+            elif command[0] == "quit":
+                quit()
 
     def printHeader(self):
         if os.name == "nt":
@@ -42,34 +51,40 @@ class Application:
         source_info = ["", "", "", "", "", ""]
         while source_info[0] == "":
             source_info[0] = str(input("Source name: ")).strip()
+            if source_info[0] == "!q": return
         while source_info[1] == "":
             source_info[1] = str(input("Homepage link: ")).strip()
+            if source_info[1] == "!q": return
         while source_info[2] == "":
             source_info[2] = str(input("edited search link: ")).strip()
+            if source_info[2] == "!q": return
             try:
-                i = source_info[2].index("[query]")
+                _ = source_info[2].index("[query]")
             except ValueError:
                 print("[query] marcation missing")
                 source_info[2] = ""
         while source_info[3] == "":
             source_info[3] = str(input("edited manga link: ")).strip()
+            if source_info[3] == "!q": return
             try:
-                i = source_info[3].index("[mangaName]")
+                _ = source_info[3].index("[mangaName]")
             except ValueError:
                 print("[mangaName] marcation missing")
                 source_info[3] = ""
         while source_info[4] == "":
             source_info[4] = str(input("edited chapter link: ")).strip()
+            if source_info[4] == "!q": return
             try:
-                i = source_info[4].index("[mangaName]")
-                j = source_info[4].index("[chapterNum]")
+                _ = source_info[4].index("[mangaName]")
+                _ = source_info[4].index("[chapterNum]")
             except ValueError:
                 print("[mangaName] or [chapterNum] marcation missing")
                 source_info[4] = ""
         while source_info[5] == "":
             source_info[5] = str(input("edited image in chapter link: ")).strip()
+            if source_info[5] == "!q": return
             try:
-                i = source_info[5].index("[image]")
+                _ = source_info[5].index("[image]")
             except ValueError:
                 print("[image] marcation missing")
                 source_info[5] = ""
@@ -92,6 +107,9 @@ class Application:
         elif type(result) == list and len(result) > 0:
             if len(result) == 1:
                 to_be_deleted = result[0][0]
+                print(f"Delete [{to_be_deleted}] {result[0][1]}?")
+                confirm = str(input("Y/N: ")).strip().lower()
+                if confirm in ['n', "!q"]: return
             else:
                 sources_ids = list()
                 for source in result:
@@ -100,6 +118,7 @@ class Application:
                 to_be_deleted = -1
                 while to_be_deleted not in sources_ids:
                     num = str(input("Enter source id to delete: ")).strip()
+                    if num == "!q": return
                     try:
                         num = int(num)
                     except:
@@ -159,6 +178,7 @@ class Application:
             temp = str(input("New source name: ")).strip()
             if temp == "":
                 print("NAME was not updated")
+            elif temp == "!q": return
             else:
                 new_infos[0] = temp
                 print("Updated NAME")
@@ -169,6 +189,7 @@ class Application:
             temp = str(input("New homepage link: ")).strip()
             if temp == "":
                 print("HOMEPAGE LINK was not updated")
+            elif temp == "!q": return
             else:
                 new_infos[1] = temp
                 print("Updated HOMEPAGE LINK")
@@ -181,6 +202,7 @@ class Application:
                 if temp == "":
                     print("SEARCH LINK was not updated")
                     break
+                elif temp == "!q": return
                 try:
                     _ = temp.index("[query]")
                 except ValueError:
@@ -198,6 +220,7 @@ class Application:
                 if temp == "":
                     print("MANGA LINK was not updated")
                     break
+                elif temp == "!q": return
                 try:
                     _ = temp.index("[mangaName]")
                 except ValueError:
@@ -215,6 +238,7 @@ class Application:
                 if temp == "":
                     print("CHAPTER LINK was not updated")
                     break
+                elif temp == "!q": return
                 try:
                     _ = temp.index("[mangaName]")
                     _ = temp.index("[chapterNum]")
@@ -233,6 +257,7 @@ class Application:
                 if temp == "":
                     print("IMAGE LINK was not updated")
                     break
+                elif temp == "!q": return
                 try:
                     _ = temp.index("[image]")
                 except ValueError:
@@ -268,4 +293,3 @@ class Application:
                 print("Nothing updated")
         else:
             print("Something went wrong!")
-        

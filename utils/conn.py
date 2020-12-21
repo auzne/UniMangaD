@@ -48,7 +48,7 @@ class Database:
             home_link       TEXT NOT NULL,
             search_link     TEXT NOT NULL,
             manga_link      TEXT NOT NULL,
-            chap_link        TEXT NOT NULL,
+            chap_link       TEXT NOT NULL,
             img_link        TEXT NOT NULL
         );""")
         self.execute("""CREATE TABLE IF NOT EXISTS downloads (
